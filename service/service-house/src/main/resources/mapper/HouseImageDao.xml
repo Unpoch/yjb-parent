@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.wz.dao.HouseImageDao">
+
+    <!-- 用于select查询公用抽取的列 -->
+    <sql id="columns">
+        select id,
+               house_id,
+               image_name,
+               image_url,
+               type,
+               create_time,
+               update_time,
+               is_deleted
+        from shf_db.hse_house_image
+    </sql>
+
+    <!--根据房源id和类型查询房源或房产图片-->
+    <select id="getHouseImageByHouseIdAndType" resultType="houseImage">
+        <include refid="columns"></include>
+        where house_id = #{houseId} and type = #{type} and is_deleted = 0
+    </select>
+
+    <!--添加-->
+    <insert id="insert">
+        insert into shf_db.hse_house_image(house_id, image_name, image_url, type)
+        values (#{houseId}, #{imageName}, #{imageUrl}, #{type})
+    </insert>
+
+    <!--删除-->
+    <update id="delete">
+        update shf_db.hse_house_image
+        set is_deleted = 1 where id = #{id}
+    </update>
+</mapper>
